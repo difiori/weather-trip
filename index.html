@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget de Clima</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .weather-widget {
+            padding: 20px;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #000;
+        }
+
+        .city-weather {
+            display: none;
+        }
+
+        .city-weather.active {
+            display: block;
+        }
+
+        .city-weather h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .current-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 2rem;
+        }
+
+        .current-weather img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .forecast {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .forecast .day {
+            text-align: center;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .forecast .day img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+
+        .forecast .day span {
+            display: block;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-widget">
+        <div class="tabs">
+            <div class="tab active" onclick="showCity('barcelona')">Barcelona</div>
+            <div class="tab" onclick="showCity('madrid')">Madrid</div>
+            <div class="tab" onclick="showCity('saopaulo')">São Paulo</div>
+        </div>
+
+        <div id="barcelona" class="city-weather active">
+            <h2>BARCELONA</h2>
+            <div class="current-weather">
+                <img id="current-icon-barcelona" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
+                <span id="current-temp-barcelona">31°C</span>
+            </div>
+            <div class="forecast" id="forecast-barcelona"></div>
+        </div>
+
+        <div id="madrid" class="city-weather">
+            <h2>MADRID</h2>
+            <div class="current-weather">
+                <img id="current-icon-madrid" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
+                <span id="current-temp-madrid">31°C</span>
+            </div>
+            <div class="forecast" id="forecast-madrid"></div>
+        </div>
+
+        <div id="saopaulo" class="city-weather">
+            <h2>SÃO PAULO</h2>
+            <div class="current-weather">
+                <img id="current-icon-saopaulo" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
+                <span id="current-temp-saopaulo">31°C</span>
+            </div>
+            <div class="forecast" id="forecast-saopaulo"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = 'fa7a51c82e7fc59d3ca889505f94dcd2';
+
+        const cities = [
+            { id: 'barcelona', name: 'Barcelona' },
+            { id: 'madrid', name: 'Madrid' },
+            { id: 'saopaulo', name: 'São Paulo' }
+        ];
+
+        async function fetchWeatherData(city) {
+            const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city.name}&units=metric&lang=pt_br&appid=${apiKey}`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                // Atualiza o clima atual
+                const currentWeather = data.list[0];
+                document.getElementById(`current-temp-${city.id}`).textContent = `${Math.round(currentWeather.main.temp)}°C`;
+                document.getElementById(`current-icon-${city.id}`).src = getWeatherIcon(currentWeather.weather[0].icon);
+
+                // Atualiza a previsão dos próximos 5 dias
+                const forecastContainer = document.getElementById(`forecast-${city.id}`);
+                forecastContainer.innerHTML = ''; // Limpa o conteúdo anterior
+
+                const daysForecast = [];
+                let previousDate = '';
+
+                for (let i = 0; i < data.list.length; i++) {
+                    const dayData = data.list[i];
+                    const date = new Date(dayData.dt_txt);
+                    const dayName = date.toLocaleDateString('pt-BR', { weekday: 'long' });
+
+                    // Garantir que exiba apenas um registro por dia
+                    if (dayName !== previousDate && daysForecast.length < 5) {
+                        previousDate = dayName;
+                        const tempMax = Math.round(dayData.main.temp_max);
+                        const tempMin = Math.round(dayData.main.temp_min);
+                        const weatherIcon = getWeatherIcon(dayData.weather[0].icon);
+
+                        daysForecast.push(`
+                            <div class="day">
+                                <span>${dayName}</span>
+                                <img src="${weatherIcon}" alt="${dayData.weather[0].description}">
+                                <span>max. ${tempMax}°C</span>
+                                <span>min. ${tempMin}°C</span>
+                            </div>
+                        `);
+                    }
+                }
+
+                forecastContainer.innerHTML = daysForecast.join('');
+            } catch (error) {
+                console.error(`Erro ao buscar dados do clima para ${city.name}:`, error);
+            }
+        }
+
+        function getWeatherIcon(iconCode) {
+            const iconMap = {
+                '01d': 'https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg',
+                '01n': 'https://basmilius.github.io/weather-icons/production/fill/all/clear-night.svg',
+                '02d': 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day.svg',
+                '02n': 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night.svg',
+                '03d': 'https://basmilius.github.io/weather-icons/production/fill/all/cloudy.svg',
+                '03n': 'https://basmilius.github.io/weather-icons/production/fill/all/cloudy.svg',
+                '04d': 'https://basmilius.github.io/weather-icons/production/fill/all/overcast-day.svg',
+                '04n': 'https://basmilius.github.io/weather-icons/production/fill/all/overcast-night.svg',
+                '09d': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
+                '09n': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
+                '10d': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
+                '10n': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
+                '11d': 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-day.svg',
+                '11n': 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-night.svg',
+                '13d': 'https://basmilius.github.io/weather-icons/production/fill/all/snow.svg',
+                '13n': 'https://basmilius.github.io/weather-icons/production/fill/all/snow.svg',
+                '50d': 'https://basmilius.github.io/weather-icons/production/fill/all/fog.svg',
+                '50n': 'https://basmilius.github.io/weather-icons/production/fill/all/fog.svg'
+            };
+            return iconMap[iconCode] || 'https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg';
+        }
+
+               function showCity(cityId) {
+            document.querySelectorAll('.city-weather').forEach(city => {
+                city.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(cityId).classList.add('active');
+            document.querySelector(`.tab[onclick="showCity('${cityId}')"]`).classList.add('active');
+        }
+
+        // Inicializa com dados de todas as cidades
+        cities.forEach(city => fetchWeatherData(city));
+
+        // Atualiza os dados a cada 2 horas
+        setInterval(() => {
+            cities.forEach(city => fetchWeatherData(city));
+        }, 7200000); // 2 horas em milissegundos
+    </script>
+</body>
+</html>
