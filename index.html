@@ -93,18 +93,18 @@ color: #444;
 <body>
 <div class="weather-widget">
 <div class="tabs">
-<div class="tab active" onclick="showCity('londres')">Londres</div>
+<div class="tab active" onclick="showCity('valencia')">Valencia</div>
 <div class="tab" onclick="showCity('madrid')">Madrid</div>
 <div class="tab" onclick="showCity('saopaulo')">São Paulo</div>
 </div>
 
-<div id="londres" class="city-weather active">
-<h2>LONDRES</h2>
+<div id="valencia" class="city-weather active">
+<h2>VALENCIA</h2>
 <div class="current-weather">
-<img id="current-icon-londres" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
-<span id="current-temp-londres">--°C</span>
+<img id="current-icon-valencia" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
+<span id="current-temp-valencia">--°C</span>
 </div>
-<div class="forecast" id="forecast-londres"></div>
+<div class="forecast" id="forecast-valencia"></div>
 </div>
 
 <div id="madrid" class="city-weather">
@@ -130,12 +130,14 @@ color: #444;
 const apiKey = 'fa7a51c82e7fc59d3ca889505f94dcd2';
 
 const cities = [
-{ id: 'londres', name: 'London' },
+{ id: 'valencia', name: 'Valencia' },
 { id: 'madrid', name: 'Madrid' },
 { id: 'saopaulo', name: 'São Paulo' }
 ];
 
 async function fetchWeatherData(city) {
+// Nota: 'Valencia' geralmente retorna a cidade da Espanha por padrão na API.
+// Se houver conflito com Valencia na Venezuela, altere name para 'Valencia,ES'.
 const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city.name}&units=metric&lang=pt_br&appid=${apiKey}`;
 try {
 const response = await fetch(apiUrl);
@@ -214,8 +216,10 @@ document.getElementById(cityId).classList.add('active');
 document.querySelector(`.tab[onclick="showCity('${cityId}')"]`).classList.add('active');
 }
 
+// Inicializa
 cities.forEach(city => fetchWeatherData(city));
 
+// Atualiza a cada 2 horas
 setInterval(() => {
 cities.forEach(city => fetchWeatherData(city));
 }, 7200000); 
