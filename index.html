@@ -1,228 +1,339 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Widget de Clima</title>
-<style>
-body {
-font-family: 'Courier New', Courier, monospace;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
-margin: 0;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Widget de Clima</title>
 
-.weather-widget {
-padding: 20px;
-text-align: center;
-max-width: 800px;
-width: 100%;
-}
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #fff;
+      color: #111;
+    }
 
-.tabs {
-display: flex;
-justify-content: center;
-margin-bottom: 20px;
-}
+    .weather-widget {
+      padding: 20px;
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-.tab {
-padding: 10px 20px;
-cursor: pointer;
-font-weight: bold;
-border-bottom: 2px solid transparent;
-}
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
 
-.tab.active {
-border-bottom: 2px solid #000;
-}
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-bottom: 2px solid transparent;
+      user-select: none;
+    }
 
-.city-weather {
-display: none;
-}
+    .tab.active {
+      border-bottom: 2px solid #000;
+    }
 
-.city-weather.active {
-display: block;
-}
+    .city-weather {
+      display: none;
+    }
 
-.city-weather h2 {
-margin: 0;
-font-size: 24px;
-font-weight: 600;
-color: #444;
-}
+    .city-weather.active {
+      display: block;
+    }
 
-.current-weather {
-display: flex;
-flex-direction: column;
-align-items: center;
-margin: 20px 0;
-font-size: 2rem;
-}
+    .city-weather h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: #444;
+      letter-spacing: 1px;
+    }
 
-.current-weather img {
-width: 50px;
-height: 50px;
-}
+    .current-weather {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 24px 0 32px;
+    }
 
-.forecast {
-display: flex;
-justify-content: space-between;
-margin-top: 20px;
-}
+    .current-weather img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+    }
 
-.forecast .day {
-text-align: center;
-font-size: 0.9rem;
-flex: 1;
-}
+    .current-desc {
+      font-size: 1rem;
+      color: #444;
+      margin-top: 4px;
+      text-transform: lowercase;
+    }
 
-.forecast .day img {
-width: 40px;
-height: 40px;
-margin-bottom: 5px;
-}
+    .current-temp {
+      font-size: 3rem;
+      line-height: 1;
+      margin-top: 6px;
+    }
 
-.forecast .day span {
-display: block;
-color: #444;
-}
-</style>
+    .forecast {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .forecast .day {
+      text-align: center;
+      font-size: 0.95rem;
+      min-width: 0;
+    }
+
+    .forecast .day img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin: 6px 0;
+    }
+
+    .forecast .day span {
+      display: block;
+      color: #444;
+    }
+
+    .error {
+      color: #a00;
+      font-size: 0.95rem;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 720px) {
+      .forecast {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .current-temp {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="weather-widget">
-<div class="tabs">
-<div class="tab active" onclick="showCity('valencia')">Valencia</div>
-<div class="tab" onclick="showCity('madrid')">Madrid</div>
-<div class="tab" onclick="showCity('saopaulo')">São Paulo</div>
-</div>
+  <div class="weather-widget">
+    <div class="tabs">
+      <div class="tab active" data-city="valencia">Valencia</div>
+      <div class="tab" data-city="madrid">Madrid</div>
+      <div class="tab" data-city="saopaulo">São Paulo</div>
+    </div>
 
-<div id="valencia" class="city-weather active">
-<h2>VALENCIA</h2>
-<div class="current-weather">
-<img id="current-icon-valencia" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
-<span id="current-temp-valencia">--°C</span>
-</div>
-<div class="forecast" id="forecast-valencia"></div>
-</div>
+    <div id="valencia" class="city-weather active">
+      <h2>VALENCIA</h2>
+      <div class="current-weather">
+        <img id="current-icon-valencia" alt="" />
+        <span id="current-desc-valencia" class="current-desc">carregando...</span>
+        <span id="current-temp-valencia" class="current-temp">--°C</span>
+      </div>
+      <div class="forecast" id="forecast-valencia"></div>
+      <div class="error" id="error-valencia"></div>
+    </div>
 
-<div id="madrid" class="city-weather">
-<h2>MADRID</h2>
-<div class="current-weather">
-<img id="current-icon-madrid" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
-<span id="current-temp-madrid">--°C</span>
-</div>
-<div class="forecast" id="forecast-madrid"></div>
-</div>
+    <div id="madrid" class="city-weather">
+      <h2>MADRID</h2>
+      <div class="current-weather">
+        <img id="current-icon-madrid" alt="" />
+        <span id="current-desc-madrid" class="current-desc">carregando...</span>
+        <span id="current-temp-madrid" class="current-temp">--°C</span>
+      </div>
+      <div class="forecast" id="forecast-madrid"></div>
+      <div class="error" id="error-madrid"></div>
+    </div>
 
-<div id="saopaulo" class="city-weather">
-<h2>SÃO PAULO</h2>
-<div class="current-weather">
-<img id="current-icon-saopaulo" src="https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg" alt="Sunny">
-<span id="current-temp-saopaulo">--°C</span>
-</div>
-<div class="forecast" id="forecast-saopaulo"></div>
-</div>
-</div>
+    <div id="saopaulo" class="city-weather">
+      <h2>SÃO PAULO</h2>
+      <div class="current-weather">
+        <img id="current-icon-saopaulo" alt="" />
+        <span id="current-desc-saopaulo" class="current-desc">carregando...</span>
+        <span id="current-temp-saopaulo" class="current-temp">--°C</span>
+      </div>
+      <div class="forecast" id="forecast-saopaulo"></div>
+      <div class="error" id="error-saopaulo"></div>
+    </div>
+  </div>
 
-<script>
-const apiKey = 'fa7a51c82e7fc59d3ca889505f94dcd2';
+  <script>
+    const apiKey = 'SUA_API_KEY_AQUI';
 
-const cities = [
-{ id: 'valencia', name: 'Valencia' },
-{ id: 'madrid', name: 'Madrid' },
-{ id: 'saopaulo', name: 'São Paulo' }
-];
+    const cities = [
+      {
+        id: 'valencia',
+        label: 'Valencia',
+        lat: 39.4699,
+        lon: -0.3763
+      },
+      {
+        id: 'madrid',
+        label: 'Madrid',
+        lat: 40.4168,
+        lon: -3.7038
+      },
+      {
+        id: 'saopaulo',
+        label: 'São Paulo',
+        lat: -23.5505,
+        lon: -46.6333
+      }
+    ];
 
-async function fetchWeatherData(city) {
-// Nota: 'Valencia' geralmente retorna a cidade da Espanha por padrão na API.
-// Se houver conflito com Valencia na Venezuela, altere name para 'Valencia,ES'.
-const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city.name}&units=metric&lang=pt_br&appid=${apiKey}`;
-try {
-const response = await fetch(apiUrl);
-const data = await response.json();
+    function getIconUrl(iconCode) {
+      return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    }
 
-const currentWeather = data.list[0];
-document.getElementById(`current-temp-${city.id}`).textContent = `${Math.round(currentWeather.main.temp)}°C`;
-document.getElementById(`current-icon-${city.id}`).src = getWeatherIcon(currentWeather.weather[0].icon);
+    function formatLocalDateFromTimestamp(timestamp, timezoneOffsetSeconds) {
+      const date = new Date((timestamp + timezoneOffsetSeconds) * 1000);
 
-const forecastContainer = document.getElementById(`forecast-${city.id}`);
-forecastContainer.innerHTML = ''; 
+      return date.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        timeZone: 'UTC'
+      });
+    }
 
-const daysForecast = [];
-let previousDate = '';
+    function getLocalDayKey(timestamp, timezoneOffsetSeconds) {
+      const date = new Date((timestamp + timezoneOffsetSeconds) * 1000);
 
-for (let i = 0; i < data.list.length; i++) {
-const dayData = data.list[i];
-const date = new Date(dayData.dt_txt);
-const dayName = date.toLocaleDateString('pt-BR', { weekday: 'long' });
+      return date.toISOString().slice(0, 10);
+    }
 
-if (dayName !== previousDate && daysForecast.length < 5) {
-previousDate = dayName;
-const tempMax = Math.round(dayData.main.temp_max);
-const tempMin = Math.round(dayData.main.temp_min);
-const weatherIcon = getWeatherIcon(dayData.weather[0].icon);
+    async function fetchWeatherData(city) {
+      const currentUrl =
+        `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&lang=pt_br&appid=${apiKey}`;
 
-daysForecast.push(`
-<div class="day">
-<span>${dayName}</span>
-<img src="${weatherIcon}" alt="${dayData.weather[0].description}">
-<span>max. ${tempMax}°C</span>
-<span>min. ${tempMin}°C</span>
-</div>
-`);
-}
-}
+      const forecastUrl =
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&lang=pt_br&appid=${apiKey}`;
 
-forecastContainer.innerHTML = daysForecast.join('');
-} catch (error) {
-console.error(`Erro ao buscar dados do clima para ${city.name}:`, error);
-}
-}
+      const errorEl = document.getElementById(`error-${city.id}`);
+      errorEl.textContent = '';
 
-function getWeatherIcon(iconCode) {
-const iconMap = {
-'01d': 'https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg',
-'01n': 'https://basmilius.github.io/weather-icons/production/fill/all/clear-night.svg',
-'02d': 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day.svg',
-'02n': 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night.svg',
-'03d': 'https://basmilius.github.io/weather-icons/production/fill/all/cloudy.svg',
-'03n': 'https://basmilius.github.io/weather-icons/production/fill/all/cloudy.svg',
-'04d': 'https://basmilius.github.io/weather-icons/production/fill/all/overcast-day.svg',
-'04n': 'https://basmilius.github.io/weather-icons/production/fill/all/overcast-night.svg',
-'09d': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
-'09n': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
-'10d': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
-'10n': 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
-'11d': 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-day.svg',
-'11n': 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-night.svg',
-'13d': 'https://basmilius.github.io/weather-icons/production/fill/all/snow.svg',
-'13n': 'https://basmilius.github.io/weather-icons/production/fill/all/snow.svg',
-'50d': 'https://basmilius.github.io/weather-icons/production/fill/all/fog.svg',
-'50n': 'https://basmilius.github.io/weather-icons/production/fill/all/fog.svg'
-};
-return iconMap[iconCode] || 'https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg';
-}
+      try {
+        const [currentResponse, forecastResponse] = await Promise.all([
+          fetch(currentUrl),
+          fetch(forecastUrl)
+        ]);
 
-function showCity(cityId) {
-document.querySelectorAll('.city-weather').forEach(city => {
-city.classList.remove('active');
-});
-document.querySelectorAll('.tab').forEach(tab => {
-tab.classList.remove('active');
-});
-document.getElementById(cityId).classList.add('active');
-document.querySelector(`.tab[onclick="showCity('${cityId}')"]`).classList.add('active');
-}
+        if (!currentResponse.ok || !forecastResponse.ok) {
+          throw new Error('Falha ao buscar dados da OpenWeather.');
+        }
 
-// Inicializa
-cities.forEach(city => fetchWeatherData(city));
+        const currentData = await currentResponse.json();
+        const forecastData = await forecastResponse.json();
 
-// Atualiza a cada 2 horas
-setInterval(() => {
-cities.forEach(city => fetchWeatherData(city));
-}, 7200000); 
-</script>
+        renderCurrentWeather(city, currentData);
+        renderForecast(city, forecastData);
+
+      } catch (error) {
+        console.error(`Erro ao buscar clima de ${city.label}:`, error);
+        errorEl.textContent = 'Não foi possível carregar o clima agora.';
+      }
+    }
+
+    function renderCurrentWeather(city, data) {
+      const tempEl = document.getElementById(`current-temp-${city.id}`);
+      const iconEl = document.getElementById(`current-icon-${city.id}`);
+      const descEl = document.getElementById(`current-desc-${city.id}`);
+
+      const weather = data.weather?.[0];
+
+      tempEl.textContent = `${Math.round(data.main.temp)}°C`;
+      descEl.textContent = weather?.description || '';
+
+      iconEl.src = getIconUrl(weather.icon);
+      iconEl.alt = weather?.description || '';
+    }
+
+    function renderForecast(city, data) {
+      const forecastContainer = document.getElementById(`forecast-${city.id}`);
+      const timezoneOffset = data.city.timezone;
+      const groupedDays = {};
+
+      data.list.forEach(item => {
+        const dayKey = getLocalDayKey(item.dt, timezoneOffset);
+
+        if (!groupedDays[dayKey]) {
+          groupedDays[dayKey] = {
+            timestamp: item.dt,
+            tempsMax: [],
+            tempsMin: [],
+            items: []
+          };
+        }
+
+        groupedDays[dayKey].tempsMax.push(item.main.temp_max);
+        groupedDays[dayKey].tempsMin.push(item.main.temp_min);
+        groupedDays[dayKey].items.push(item);
+      });
+
+      const days = Object.values(groupedDays).slice(0, 5);
+
+      const html = days.map(day => {
+        const tempMax = Math.round(Math.max(...day.tempsMax));
+        const tempMin = Math.round(Math.min(...day.tempsMin));
+
+        const noonItem =
+          day.items.find(item => item.dt_txt.includes('12:00:00')) ||
+          day.items[Math.floor(day.items.length / 2)];
+
+        const weather = noonItem.weather[0];
+        const dayName = formatLocalDateFromTimestamp(day.timestamp, timezoneOffset);
+
+        return `
+          <div class="day">
+            <span>${dayName}</span>
+            <img src="${getIconUrl(weather.icon)}" alt="${weather.description}" />
+            <span>${weather.description}</span>
+            <span>máx. ${tempMax}°C</span>
+            <span>mín. ${tempMin}°C</span>
+          </div>
+        `;
+      }).join('');
+
+      forecastContainer.innerHTML = html;
+    }
+
+    function showCity(cityId) {
+      document.querySelectorAll('.city-weather').forEach(city => {
+        city.classList.remove('active');
+      });
+
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      document.getElementById(cityId).classList.add('active');
+      document.querySelector(`.tab[data-city="${cityId}"]`).classList.add('active');
+    }
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        showCity(tab.dataset.city);
+      });
+    });
+
+    cities.forEach(city => fetchWeatherData(city));
+
+    setInterval(() => {
+      cities.forEach(city => fetchWeatherData(city));
+    }, 7200000);
+  </script>
 </body>
 </html>
