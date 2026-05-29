@@ -126,31 +126,43 @@
 <body>
   <div class="weather-widget">
     <div class="tabs">
-      <div class="tab active" onclick="showCity('valencia')">Valencia</div>
-      <div class="tab" onclick="showCity('madrid')">Madrid</div>
+      <div class="tab active" onclick="showCity('roma')">Roma</div>
+      <div class="tab" onclick="showCity('firenze')">Firenze</div>
+      <div class="tab" onclick="showCity('pisa')">Pisa</div>
       <div class="tab" onclick="showCity('saopaulo')">São Paulo</div>
     </div>
 
-    <div id="valencia" class="city-weather active">
-      <h2>VALENCIA</h2>
+    <div id="roma" class="city-weather active">
+      <h2>ROMA</h2>
       <div class="current-weather">
-        <img id="current-icon-valencia" src="" alt="" />
-        <span id="current-desc-valencia" class="description">Carregando...</span>
-        <span id="current-temp-valencia" class="temperature">--°C</span>
+        <img id="current-icon-roma" src="" alt="" />
+        <span id="current-desc-roma" class="description">Carregando...</span>
+        <span id="current-temp-roma" class="temperature">--°C</span>
       </div>
-      <div id="forecast-valencia" class="forecast"></div>
-      <div id="error-valencia" class="error"></div>
+      <div id="forecast-roma" class="forecast"></div>
+      <div id="error-roma" class="error"></div>
     </div>
 
-    <div id="madrid" class="city-weather">
-      <h2>MADRID</h2>
+    <div id="firenze" class="city-weather">
+      <h2>FIRENZE</h2>
       <div class="current-weather">
-        <img id="current-icon-madrid" src="" alt="" />
-        <span id="current-desc-madrid" class="description">Carregando...</span>
-        <span id="current-temp-madrid" class="temperature">--°C</span>
+        <img id="current-icon-firenze" src="" alt="" />
+        <span id="current-desc-firenze" class="description">Carregando...</span>
+        <span id="current-temp-firenze" class="temperature">--°C</span>
       </div>
-      <div id="forecast-madrid" class="forecast"></div>
-      <div id="error-madrid" class="error"></div>
+      <div id="forecast-firenze" class="forecast"></div>
+      <div id="error-firenze" class="error"></div>
+    </div>
+
+    <div id="pisa" class="city-weather">
+      <h2>PISA</h2>
+      <div class="current-weather">
+        <img id="current-icon-pisa" src="" alt="" />
+        <span id="current-desc-pisa" class="description">Carregando...</span>
+        <span id="current-temp-pisa" class="temperature">--°C</span>
+      </div>
+      <div id="forecast-pisa" class="forecast"></div>
+      <div id="error-pisa" class="error"></div>
     </div>
 
     <div id="saopaulo" class="city-weather">
@@ -170,18 +182,25 @@
 
     const cities = [
       {
-        id: 'valencia',
-        name: 'Valencia',
-        country: 'ES',
-        lat: 39.4699,
-        lon: -0.3763
+        id: 'roma',
+        name: 'Roma',
+        country: 'IT',
+        lat: 41.9028,
+        lon: 12.4964
       },
       {
-        id: 'madrid',
-        name: 'Madrid',
-        country: 'ES',
-        lat: 40.4168,
-        lon: -3.7038
+        id: 'firenze',
+        name: 'Firenze',
+        country: 'IT',
+        lat: 43.7696,
+        lon: 11.2558
+      },
+      {
+        id: 'pisa',
+        name: 'Pisa',
+        country: 'IT',
+        lat: 43.7228,
+        lon: 10.4017
       },
       {
         id: 'saopaulo',
