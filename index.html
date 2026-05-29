@@ -6,37 +6,46 @@
   <title>Widget de Clima</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Courier New', Courier, monospace;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
       margin: 0;
       background: #fff;
+      color: #37352F;
+      overflow-x: hidden;
     }
 
     .weather-widget {
-      padding: 20px;
-      text-align: center;
-      max-width: 900px;
       width: 100%;
+      max-width: 760px;
+      padding: 14px 18px 18px;
+      text-align: center;
     }
 
     .tabs {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-bottom: 30px;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
     }
 
     .tab {
-      padding: 10px 20px;
+      padding: 6px 2px 8px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 700;
       border-bottom: 3px solid transparent;
-      font-size: 1.2rem;
+      font-size: 0.95rem;
+      line-height: 1;
+      white-space: nowrap;
     }
 
     .tab.active {
@@ -52,52 +61,69 @@
     }
 
     h2 {
-      margin: 0 0 20px;
-      font-size: 2rem;
+      margin: 0 0 12px;
+      font-size: 1.45rem;
+      line-height: 1;
       color: #444;
+      letter-spacing: -0.03em;
     }
 
     .current-weather {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: center;
       align-items: center;
-      margin-bottom: 35px;
+      gap: 10px 18px;
+      margin-bottom: 18px;
     }
 
     .current-weather img {
-      width: 80px;
-      height: 80px;
+      width: 58px;
+      height: 58px;
       object-fit: contain;
+      grid-row: span 2;
     }
 
     .description {
-      font-size: 1.4rem;
+      font-size: 1rem;
       color: #444;
       text-transform: capitalize;
-    }
-
-    .temperature {
-      font-size: 3rem;
+      text-align: left;
       line-height: 1.1;
     }
 
+    .temperature {
+      font-size: 2.35rem;
+      line-height: 1;
+      font-weight: 500;
+      text-align: left;
+      letter-spacing: -0.08em;
+    }
+
     .forecast {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      width: 100%;
     }
 
     .day {
-      flex: 1;
+      min-width: 0;
+      padding: 8px 6px;
       text-align: center;
-      font-size: 0.95rem;
+      font-size: 0.75rem;
+      line-height: 1.15;
       color: #444;
+      border: 1px solid #eeeeee;
+      border-radius: 10px;
+      background: #fafafa;
     }
 
     .day img {
-      width: 50px;
-      height: 50px;
+      width: 34px;
+      height: 34px;
       object-fit: contain;
+      margin: 2px auto;
     }
 
     .day span {
@@ -105,19 +131,64 @@
       margin: 2px 0;
     }
 
+    .day-name {
+      font-weight: 700;
+      text-transform: capitalize;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .day-desc {
+      min-height: 26px;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-transform: capitalize;
+    }
+
+    .temp-line {
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+
     .error {
       color: #c00;
-      margin-top: 20px;
-      font-size: 1rem;
+      margin-top: 12px;
+      font-size: 0.85rem;
     }
 
     @media (max-width: 700px) {
-      .forecast {
-        flex-direction: column;
+      .weather-widget {
+        padding: 12px;
+      }
+
+      .tabs {
+        gap: 14px;
+        margin-bottom: 16px;
       }
 
       .tab {
-        font-size: 1rem;
+        font-size: 0.85rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      .temperature {
+        font-size: 2rem;
+      }
+
+      .forecast {
+        grid-template-columns: repeat(5, minmax(72px, 1fr));
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .day {
+        min-width: 72px;
       }
     }
   </style>
@@ -266,8 +337,8 @@
             icons: [],
             descriptions: [],
             dayName: new Date(date + 'T12:00:00').toLocaleDateString('pt-BR', {
-              weekday: 'long'
-            })
+              weekday: 'short'
+            }).replace('.', '')
           };
         }
 
@@ -288,11 +359,10 @@
 
         forecastContainer.innerHTML += `
           <div class="day">
-            <span>${day.dayName}</span>
+            <span class="day-name">${day.dayName}</span>
             <img src="${getIcon(icon)}" alt="${description}">
-            <span>${description}</span>
-            <span>máx. ${max}°C</span>
-            <span>mín. ${min}°C</span>
+            <span class="day-desc">${description}</span>
+            <span class="temp-line">${min}° / ${max}°</span>
           </div>
         `;
       });
