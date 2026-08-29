@@ -149,7 +149,6 @@
     }
 
     .day-desc {
-      display: block;
       min-height: 30px;
       color: #666;
       text-transform: capitalize;
@@ -271,76 +270,121 @@
 
 <body>
   <div class="weather-widget">
+
     <div class="tabs">
-      <div class="tab active" onclick="showCity('roma')">Roma</div>
-      <div class="tab" onclick="showCity('firenze')">Firenze</div>
-      <div class="tab" onclick="showCity('pisa')">Pisa</div>
-      <div class="tab" onclick="showCity('saopaulo')">São Paulo</div>
+      <div class="tab active" onclick="showCity('saopaulo')">São Paulo</div>
+      <div class="tab" onclick="showCity('madrid')">Madrid</div>
+      <div class="tab" onclick="showCity('valencia')">Valencia</div>
+      <div class="tab" onclick="showCity('barcelona')">Barcelona</div>
     </div>
 
-    <div id="roma" class="city-weather active">
-      <div class="current-weather">
-        <div class="city-info">
-          <h2 class="city-title">ROMA</h2>
-          <span id="current-desc-roma" class="description">Carregando...</span>
-        </div>
-
-        <img id="current-icon-roma" class="weather-icon" src="" alt="" />
-
-        <div id="current-temp-roma" class="temperature">--°C</div>
-      </div>
-
-      <div id="forecast-roma" class="forecast"></div>
-      <div id="error-roma" class="error"></div>
-    </div>
-
-    <div id="firenze" class="city-weather">
-      <div class="current-weather">
-        <div class="city-info">
-          <h2 class="city-title">FIRENZE</h2>
-          <span id="current-desc-firenze" class="description">Carregando...</span>
-        </div>
-
-        <img id="current-icon-firenze" class="weather-icon" src="" alt="" />
-
-        <div id="current-temp-firenze" class="temperature">--°C</div>
-      </div>
-
-      <div id="forecast-firenze" class="forecast"></div>
-      <div id="error-firenze" class="error"></div>
-    </div>
-
-    <div id="pisa" class="city-weather">
-      <div class="current-weather">
-        <div class="city-info">
-          <h2 class="city-title">PISA</h2>
-          <span id="current-desc-pisa" class="description">Carregando...</span>
-        </div>
-
-        <img id="current-icon-pisa" class="weather-icon" src="" alt="" />
-
-        <div id="current-temp-pisa" class="temperature">--°C</div>
-      </div>
-
-      <div id="forecast-pisa" class="forecast"></div>
-      <div id="error-pisa" class="error"></div>
-    </div>
-
-    <div id="saopaulo" class="city-weather">
+    <!-- SÃO PAULO -->
+    <div id="saopaulo" class="city-weather active">
       <div class="current-weather">
         <div class="city-info">
           <h2 class="city-title">SÃO PAULO</h2>
-          <span id="current-desc-saopaulo" class="description">Carregando...</span>
+          <span id="current-desc-saopaulo" class="description">
+            Carregando...
+          </span>
         </div>
 
-        <img id="current-icon-saopaulo" class="weather-icon" src="" alt="" />
+        <img
+          id="current-icon-saopaulo"
+          class="weather-icon"
+          src=""
+          alt=""
+        />
 
-        <div id="current-temp-saopaulo" class="temperature">--°C</div>
+        <div id="current-temp-saopaulo" class="temperature">
+          --°C
+        </div>
       </div>
 
       <div id="forecast-saopaulo" class="forecast"></div>
       <div id="error-saopaulo" class="error"></div>
     </div>
+
+
+    <!-- MADRID -->
+    <div id="madrid" class="city-weather">
+      <div class="current-weather">
+        <div class="city-info">
+          <h2 class="city-title">MADRID</h2>
+          <span id="current-desc-madrid" class="description">
+            Carregando...
+          </span>
+        </div>
+
+        <img
+          id="current-icon-madrid"
+          class="weather-icon"
+          src=""
+          alt=""
+        />
+
+        <div id="current-temp-madrid" class="temperature">
+          --°C
+        </div>
+      </div>
+
+      <div id="forecast-madrid" class="forecast"></div>
+      <div id="error-madrid" class="error"></div>
+    </div>
+
+
+    <!-- VALENCIA -->
+    <div id="valencia" class="city-weather">
+      <div class="current-weather">
+        <div class="city-info">
+          <h2 class="city-title">VALENCIA</h2>
+          <span id="current-desc-valencia" class="description">
+            Carregando...
+          </span>
+        </div>
+
+        <img
+          id="current-icon-valencia"
+          class="weather-icon"
+          src=""
+          alt=""
+        />
+
+        <div id="current-temp-valencia" class="temperature">
+          --°C
+        </div>
+      </div>
+
+      <div id="forecast-valencia" class="forecast"></div>
+      <div id="error-valencia" class="error"></div>
+    </div>
+
+
+    <!-- BARCELONA -->
+    <div id="barcelona" class="city-weather">
+      <div class="current-weather">
+        <div class="city-info">
+          <h2 class="city-title">BARCELONA</h2>
+          <span id="current-desc-barcelona" class="description">
+            Carregando...
+          </span>
+        </div>
+
+        <img
+          id="current-icon-barcelona"
+          class="weather-icon"
+          src=""
+          alt=""
+        />
+
+        <div id="current-temp-barcelona" class="temperature">
+          --°C
+        </div>
+      </div>
+
+      <div id="forecast-barcelona" class="forecast"></div>
+      <div id="error-barcelona" class="error"></div>
+    </div>
+
   </div>
 
   <script>
@@ -348,150 +392,282 @@
 
     const cities = [
       {
-        id: 'roma',
-        name: 'Roma',
-        country: 'IT',
-        lat: 41.9028,
-        lon: 12.4964
-      },
-      {
-        id: 'firenze',
-        name: 'Firenze',
-        country: 'IT',
-        lat: 43.7696,
-        lon: 11.2558
-      },
-      {
-        id: 'pisa',
-        name: 'Pisa',
-        country: 'IT',
-        lat: 43.7228,
-        lon: 10.4017
-      },
-      {
         id: 'saopaulo',
         name: 'São Paulo',
         country: 'BR',
-        lat: -23.5505,
-        lon: -46.6333
+
+        // Aeroporto Internacional de Guarulhos (GRU)
+        lat: -23.4356,
+        lon: -46.4731
+      },
+
+      {
+        id: 'madrid',
+        name: 'Madrid',
+        country: 'ES',
+        lat: 40.4168,
+        lon: -3.7038
+      },
+
+      {
+        id: 'valencia',
+        name: 'Valencia',
+        country: 'ES',
+        lat: 39.4699,
+        lon: -0.3763
+      },
+
+      {
+        id: 'barcelona',
+        name: 'Barcelona',
+        country: 'ES',
+        lat: 41.3874,
+        lon: 2.1686
       }
     ];
+
 
     function getIcon(iconCode) {
       return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     }
 
+
     function capitalizeText(text) {
       if (!text) return '';
+
       return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
+
     async function fetchWeatherData(city) {
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&units=metric&lang=pt_br&appid=${apiKey}`;
-      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&lang=pt_br&appid=${apiKey}`;
+
+      const weatherUrl =
+        `https://api.openweathermap.org/data/2.5/weather` +
+        `?lat=${city.lat}` +
+        `&lon=${city.lon}` +
+        `&units=metric` +
+        `&lang=pt_br` +
+        `&appid=${apiKey}`;
+
+      const forecastUrl =
+        `https://api.openweathermap.org/data/2.5/forecast` +
+        `?lat=${city.lat}` +
+        `&lon=${city.lon}` +
+        `&units=metric` +
+        `&lang=pt_br` +
+        `&appid=${apiKey}`;
 
       try {
-        const weatherResponse = await fetch(weatherUrl);
-        const forecastResponse = await fetch(forecastUrl);
+
+        const [weatherResponse, forecastResponse] =
+          await Promise.all([
+            fetch(weatherUrl),
+            fetch(forecastUrl)
+          ]);
 
         if (!weatherResponse.ok || !forecastResponse.ok) {
           throw new Error('Erro na API');
         }
 
-        const weatherData = await weatherResponse.json();
-        const forecastData = await forecastResponse.json();
+        const [weatherData, forecastData] =
+          await Promise.all([
+            weatherResponse.json(),
+            forecastResponse.json()
+          ]);
 
         showCurrentWeather(city, weatherData);
         showForecast(city, forecastData);
 
       } catch (error) {
-        document.getElementById(`error-${city.id}`).textContent =
+
+        document.getElementById(
+          `error-${city.id}`
+        ).textContent =
           'Não foi possível carregar o clima agora.';
+
         console.error(error);
       }
     }
 
+
     function showCurrentWeather(city, data) {
+
       const icon = data.weather[0].icon;
-      const description = capitalizeText(data.weather[0].description);
+      const description =
+        capitalizeText(data.weather[0].description);
+
       const temp = Math.round(data.main.temp);
 
-      document.getElementById(`current-icon-${city.id}`).src = getIcon(icon);
-      document.getElementById(`current-icon-${city.id}`).alt = description;
-      document.getElementById(`current-desc-${city.id}`).textContent = description;
-      document.getElementById(`current-temp-${city.id}`).textContent = `${temp}°C`;
+      const iconElement =
+        document.getElementById(
+          `current-icon-${city.id}`
+        );
+
+      iconElement.src = getIcon(icon);
+      iconElement.alt = description;
+
+      document.getElementById(
+        `current-desc-${city.id}`
+      ).textContent = description;
+
+      document.getElementById(
+        `current-temp-${city.id}`
+      ).textContent = `${temp}°C`;
     }
 
+
     function showForecast(city, data) {
-      const forecastContainer = document.getElementById(`forecast-${city.id}`);
+
+      const forecastContainer =
+        document.getElementById(
+          `forecast-${city.id}`
+        );
+
       forecastContainer.innerHTML = '';
 
       const days = {};
 
       data.list.forEach(item => {
-        const date = item.dt_txt.split(' ')[0];
+
+        const date =
+          item.dt_txt.split(' ')[0];
 
         if (!days[date]) {
+
           days[date] = {
             temps: [],
             icons: [],
             descriptions: [],
-            dayName: new Date(date + 'T12:00:00').toLocaleDateString('pt-BR', {
-              weekday: 'short'
-            }).replace('.', '')
+
+            dayName:
+              new Date(
+                date + 'T12:00:00'
+              )
+              .toLocaleDateString(
+                'pt-BR',
+                {
+                  weekday: 'short'
+                }
+              )
+              .replace('.', '')
           };
         }
 
-        days[date].temps.push(item.main.temp);
-        days[date].icons.push(item.weather[0].icon);
-        days[date].descriptions.push(item.weather[0].description);
+        days[date].temps.push(
+          item.main.temp
+        );
+
+        days[date].icons.push(
+          item.weather[0].icon
+        );
+
+        days[date].descriptions.push(
+          item.weather[0].description
+        );
       });
 
-      Object.keys(days).slice(0, 5).forEach(date => {
-        const day = days[date];
 
-        const min = Math.round(Math.min(...day.temps));
-        const max = Math.round(Math.max(...day.temps));
+      Object.keys(days)
+        .slice(0, 5)
+        .forEach(date => {
 
-        const middleIndex = Math.floor(day.icons.length / 2);
-        const icon = day.icons[middleIndex];
-        const description = capitalizeText(day.descriptions[middleIndex]);
+          const day = days[date];
 
-        forecastContainer.innerHTML += `
-          <div class="day">
-            <span class="day-name">${capitalizeText(day.dayName)}</span>
-            <img src="${getIcon(icon)}" alt="${description}">
-            <span class="day-desc">${description}</span>
-            <span class="temp-line">${min}° / ${max}°</span>
-          </div>
-        `;
-      });
+          const min =
+            Math.round(
+              Math.min(...day.temps)
+            );
+
+          const max =
+            Math.round(
+              Math.max(...day.temps)
+            );
+
+          const middleIndex =
+            Math.floor(
+              day.icons.length / 2
+            );
+
+          const icon =
+            day.icons[middleIndex];
+
+          const description =
+            capitalizeText(
+              day.descriptions[middleIndex]
+            );
+
+          forecastContainer.innerHTML += `
+            <div class="day">
+
+              <span class="day-name">
+                ${capitalizeText(day.dayName)}
+              </span>
+
+              <img
+                src="${getIcon(icon)}"
+                alt="${description}"
+              >
+
+              <span class="day-desc">
+                ${description}
+              </span>
+
+              <span class="temp-line">
+                ${min}° / ${max}°
+              </span>
+
+            </div>
+          `;
+        });
     }
 
+
     function showCity(cityId) {
-      document.querySelectorAll('.city-weather').forEach(city => {
-        city.classList.remove('active');
-      });
 
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
+      document
+        .querySelectorAll('.city-weather')
+        .forEach(city => {
+          city.classList.remove('active');
+        });
 
-      document.getElementById(cityId).classList.add('active');
+      document
+        .querySelectorAll('.tab')
+        .forEach(tab => {
+          tab.classList.remove('active');
+        });
 
-      const clickedTab = Array.from(document.querySelectorAll('.tab')).find(tab =>
-        tab.getAttribute('onclick') === `showCity('${cityId}')`
-      );
+      document
+        .getElementById(cityId)
+        .classList.add('active');
+
+      const clickedTab =
+        Array.from(
+          document.querySelectorAll('.tab')
+        )
+        .find(tab =>
+          tab.getAttribute('onclick') ===
+          `showCity('${cityId}')`
+        );
 
       if (clickedTab) {
         clickedTab.classList.add('active');
       }
     }
 
-    cities.forEach(city => fetchWeatherData(city));
 
+    // Carregamento inicial
+    cities.forEach(
+      city => fetchWeatherData(city)
+    );
+
+
+    // Atualiza a cada 2 horas
     setInterval(() => {
-      cities.forEach(city => fetchWeatherData(city));
+
+      cities.forEach(
+        city => fetchWeatherData(city)
+      );
+
     }, 7200000);
   </script>
 </body>
