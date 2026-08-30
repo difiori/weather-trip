@@ -274,7 +274,6 @@
     <div class="tabs">
       <div class="tab active" onclick="showCity('saopaulo')">São Paulo</div>
       <div class="tab" onclick="showCity('madrid')">Madrid</div>
-      <div class="tab" onclick="showCity('valencia')">Valencia</div>
       <div class="tab" onclick="showCity('barcelona')">Barcelona</div>
     </div>
 
@@ -304,7 +303,6 @@
       <div id="error-saopaulo" class="error"></div>
     </div>
 
-
     <!-- MADRID -->
     <div id="madrid" class="city-weather">
       <div class="current-weather">
@@ -330,34 +328,6 @@
       <div id="forecast-madrid" class="forecast"></div>
       <div id="error-madrid" class="error"></div>
     </div>
-
-
-    <!-- VALENCIA -->
-    <div id="valencia" class="city-weather">
-      <div class="current-weather">
-        <div class="city-info">
-          <h2 class="city-title">VALENCIA</h2>
-          <span id="current-desc-valencia" class="description">
-            Carregando...
-          </span>
-        </div>
-
-        <img
-          id="current-icon-valencia"
-          class="weather-icon"
-          src=""
-          alt=""
-        />
-
-        <div id="current-temp-valencia" class="temperature">
-          --°C
-        </div>
-      </div>
-
-      <div id="forecast-valencia" class="forecast"></div>
-      <div id="error-valencia" class="error"></div>
-    </div>
-
 
     <!-- BARCELONA -->
     <div id="barcelona" class="city-weather">
@@ -410,14 +380,6 @@
       },
 
       {
-        id: 'valencia',
-        name: 'Valencia',
-        country: 'ES',
-        lat: 39.4699,
-        lon: -0.3763
-      },
-
-      {
         id: 'barcelona',
         name: 'Barcelona',
         country: 'ES',
@@ -426,18 +388,14 @@
       }
     ];
 
-
     function getIcon(iconCode) {
       return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     }
 
-
     function capitalizeText(text) {
       if (!text) return '';
-
       return text.charAt(0).toUpperCase() + text.slice(1);
     }
-
 
     async function fetchWeatherData(city) {
 
@@ -489,7 +447,6 @@
       }
     }
 
-
     function showCurrentWeather(city, data) {
 
       const icon = data.weather[0].icon;
@@ -514,7 +471,6 @@
         `current-temp-${city.id}`
       ).textContent = `${temp}°C`;
     }
-
 
     function showForecast(city, data) {
 
@@ -565,7 +521,6 @@
           item.weather[0].description
         );
       });
-
 
       Object.keys(days)
         .slice(0, 5)
@@ -621,7 +576,6 @@
         });
     }
 
-
     function showCity(cityId) {
 
       document
@@ -654,12 +608,10 @@
       }
     }
 
-
     // Carregamento inicial
     cities.forEach(
       city => fetchWeatherData(city)
     );
-
 
     // Atualiza a cada 2 horas
     setInterval(() => {
